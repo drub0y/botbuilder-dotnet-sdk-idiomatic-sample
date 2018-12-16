@@ -1,0 +1,18 @@
+{
+    "name": "SampleBot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:45100/api/messages",
+            "id": "229",
+            "name": "Development"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\Users\\drmarsh\\Source\\Repositories\\GitHub\\drub0y\\botbuilder-dotnet-sdk-idiomatic-sample\\Bot.AspNet.WebApp\\SampleBot.bot",
+    "overrides": null
+}
