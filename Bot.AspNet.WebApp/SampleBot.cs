@@ -7,16 +7,18 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 {
     public class SampleBot : IBot
     {
-        private readonly SampleBotStateAccessors _stateAccessors;
+        private readonly ConversationState _conversationState;
+        private readonly IStatePropertyAccessor<SampleBotState> _statePropertyAccessor;
 
-        public SampleBot(SampleBotStateAccessors stateAccessors)
+        public SampleBot(ConversationState conversationState, IStatePropertyAccessor<SampleBotState> statePropertyAccessor)
         {
-            _stateAccessors = stateAccessors ?? throw new System.ArgumentNullException(nameof(stateAccessors));
+            _conversationState = conversationState;
+            _statePropertyAccessor = statePropertyAccessor;
         }
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var state = await _stateAccessors.SampleBotStateAccessor.GetAsync(
+            var state = await _statePropertyAccessor.GetAsync(
                 turnContext,
                 () => new SampleBotState());
 
@@ -36,7 +38,7 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
                 await turnContext.SendActivityAsync($"[{state.EchoCount}] You said: {activity.Text}", cancellationToken: cancellationToken);
             }
 
-            await _stateAccessors.ConversationState.SaveChangesAsync(turnContext);
+            await _conversationState.SaveChangesAsync(turnContext);
         }
     }
 }

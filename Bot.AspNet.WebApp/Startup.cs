@@ -23,13 +23,8 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 
             var propertyAccessor = conversationState.CreateProperty<SampleBotState>(nameof(SampleBotState));
 
-            var stateAccessors = new SampleBotStateAccessors
-            {
-                ConversationState = conversationState,
-                SampleBotStateAccessor = propertyAccessor,
-            };
-
-            services.AddSingleton(stateAccessors);
+            services.AddSingleton(conversationState);
+            services.AddSingleton(propertyAccessor);
 
             services.AddBot<SampleBot>(options =>
             {
