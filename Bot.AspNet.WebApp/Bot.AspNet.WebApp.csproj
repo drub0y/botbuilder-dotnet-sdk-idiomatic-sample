@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BotBuilder.Extensions\BotBuilder.Extensions.csproj" />
+  </ItemGroup>
+
 </Project>

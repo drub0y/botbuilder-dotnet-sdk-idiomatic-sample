@@ -8,9 +8,19 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 {
     public class Startup
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public Startup(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment ?? throw new System.ArgumentNullException(nameof(hostingEnvironment));
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBot<SampleBot>();
+            services.AddBot<SampleBot>(options =>
+            {
+                options.UseBotConfigurationEndpointCredentialsFromFolder(_hostingEnvironment.ContentRootPath, endpointName: _hostingEnvironment.EnvironmentName);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
