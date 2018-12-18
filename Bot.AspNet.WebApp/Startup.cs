@@ -18,13 +18,18 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var store = new MemoryStorage();
-            var conversationState = new ConversationState(store);
+            services.AddBotState(botStateConfigBuilder =>
+            {
+                var storage = new MemoryStorage();
 
-            var propertyAccessor = conversationState.CreateProperty<SampleBotState>(nameof(SampleBotState));
-
-            services.AddSingleton(conversationState);
-            services.AddSingleton(propertyAccessor);
+                botStateConfigBuilder
+                    .UseConversationState(botStateBuilder =>
+                    {
+                        botStateBuilder
+                            .UseStorage(storage)
+                            .WithProperty<SampleBotState>();
+                    });
+            });
 
             services.AddBot<SampleBot>(options =>
             {
