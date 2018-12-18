@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 {
     public class Startup
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public Startup(IHostingEnvironment hostingEnvironment)
+        public Startup(IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new System.ArgumentNullException(nameof(hostingEnvironment));
+            _loggerFactory = loggerFactory ?? throw new System.ArgumentNullException(nameof(loggerFactory));
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -34,6 +37,7 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
             services.AddBot<SampleBot>(options =>
             {
                 options.UseBotConfigurationEndpointCredentialsFromFolder(_hostingEnvironment.ContentRootPath, endpointName: _hostingEnvironment.EnvironmentName);
+                options.LogUnhandledTurnExceptions(_loggerFactory.CreateLogger<SampleBot>(), "Sorry, it looks like something went wrong.");
             });
         }
 

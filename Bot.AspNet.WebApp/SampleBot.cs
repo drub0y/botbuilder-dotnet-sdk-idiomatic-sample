@@ -33,6 +33,11 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 
             if (activity.Type == ActivityTypes.Message)
             {
+                if (activity.Text == "self destruct")
+                {
+                    throw new System.Exception("Self destruct triggered... BOOM!");
+                }
+
                 state.EchoCount++;
 
                 await turnContext.SendActivityAsync($"[{state.EchoCount}] You said: {activity.Text}", cancellationToken: cancellationToken);
