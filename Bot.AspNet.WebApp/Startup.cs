@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,19 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBotState(botStateConfigBuilder =>
+            {
+                var storage = new MemoryStorage();
+
+                botStateConfigBuilder
+                    .UseConversationState(botStateBuilder =>
+                    {
+                        botStateBuilder
+                            .UseStorage(storage)
+                            .WithProperty<SampleBotState>();
+                    });
+            });
+
             services.AddBot<SampleBot>(options =>
             {
                 options.UseBotConfigurationEndpointCredentialsFromFolder(_hostingEnvironment.ContentRootPath, endpointName: _hostingEnvironment.EnvironmentName);
