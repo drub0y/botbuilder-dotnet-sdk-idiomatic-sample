@@ -37,15 +37,7 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
             services.AddBot<SampleBot>(options =>
             {
                 options.UseBotConfigurationEndpointCredentialsFromFolder(_hostingEnvironment.ContentRootPath, endpointName: _hostingEnvironment.EnvironmentName);
-
-                var logger = _loggerFactory.CreateLogger<SampleBot>();
-
-                options.OnTurnError = async (context, exception) =>
-                {
-                    logger.LogError("An unhandled exception occurred in this turn: {Exception}", exception);
-
-                    await context.SendActivityAsync("Sorry, it looks like something went wrong.");
-                };
+                options.LogUnhandledTurnExceptions(_loggerFactory.CreateLogger<SampleBot>(), "Sorry, it looks like something went wrong.");
             });
         }
 
