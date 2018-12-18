@@ -11,11 +11,12 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
     public class Startup
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        private ILoggerFactory _loggerFactory;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public Startup(IHostingEnvironment hostingEnvironment)
+        public Startup(IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new System.ArgumentNullException(nameof(hostingEnvironment));
+            _loggerFactory = loggerFactory ?? throw new System.ArgumentNullException(nameof(loggerFactory));
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -41,17 +42,15 @@ namespace HackedBrain.BotBuilder.Samples.IdiomaticNetCore.BotWebApp
 
                 options.OnTurnError = async (context, exception) =>
                 {
-                    logger.LogError($"Exception caught : {exception}");
+                    logger.LogError("An unhandled exception occurred in this turn: {Exception}", exception);
 
                     await context.SendActivityAsync("Sorry, it looks like something went wrong.");
                 };
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            _loggerFactory = loggerFactory;
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
